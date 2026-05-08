@@ -129,6 +129,8 @@
 
 <script>
 
+let accessToken = "";
+
 function loginGoogle(){
 
   const clientId =
@@ -151,7 +153,63 @@ function loginGoogle(){
   window.location.href = authUrl;
 }
 
-</script>
+function parseToken(){
 
+  const hash = window.location.hash;
+
+  if(!hash){
+    return;
+  }
+
+  const cleanHash =
+    hash.substring(1);
+
+  const params =
+    new URLSearchParams(cleanHash);
+
+  const token =
+    params.get("access_token");
+
+  if(token){
+
+    accessToken = token;
+
+    document.getElementById(
+      "tokenBox"
+    ).innerText = token;
+
+    localStorage.setItem(
+      "google_token",
+      token
+    );
+
+  }
+}
+
+function loadSavedToken(){
+
+  const saved =
+    localStorage.getItem(
+      "google_token"
+    );
+
+  if(saved){
+
+    accessToken = saved;
+
+    document.getElementById(
+      "tokenBox"
+    ).innerText = saved;
+  }
+}
+
+window.onload = function(){
+
+  parseToken();
+
+  loadSavedToken();
+};
+
+</script>
 </body>
 </html>
