@@ -129,92 +129,26 @@
 
 <script>
 
-let accessToken = "";
-
 function loginGoogle(){
 
-  const clientId = "378047324981-ub1qjrlurqk51tu2f82jmnad2ok73acm.apps.googleusercontent.com";
+  const clientId =
+    "CLIENT_ID_KAMU";
 
-  const redirectUri = window.location.origin + window.location.pathname;
+  const redirectUri =
+    "https://geneis.netlify.app";
 
-  const scope = "https://www.googleapis.com/auth/userinfo.email";
+  const scope =
+    "openid email profile";
 
   const authUrl =
     "https://accounts.google.com/o/oauth2/v2/auth" +
     "?client_id=" + encodeURIComponent(clientId) +
     "&redirect_uri=" + encodeURIComponent(redirectUri) +
     "&response_type=token" +
-    "&scope=" + encodeURIComponent(scope);
+    "&scope=" + encodeURIComponent(scope) +
+    "&prompt=consent";
 
   window.location.href = authUrl;
-}
-
-function parseToken(){
-
-  const hash = window.location.hash.substring(1);
-
-  const params = new URLSearchParams(hash);
-
-  const token = params.get("access_token");
-
-  if(token){
-
-    accessToken = token;
-
-    document.getElementById("tokenBox").innerText = token;
-  }
-}
-
-parseToken();
-
-function generateBatch(){
-
-  if(!accessToken){
-    alert("Login Google terlebih dahulu");
-    return;
-  }
-
-  const prompts = document
-    .getElementById("promptInput")
-    .value
-    .split("\n")
-    .filter(p => p.trim() !== "");
-
-  const resultBox = document.getElementById("resultBox");
-
-  resultBox.innerHTML = "";
-
-  prompts.forEach((prompt,index)=>{
-
-    const div = document.createElement("div");
-
-    div.className = "item";
-
-    div.innerHTML = `
-      <b>#${index+1}</b><br><br>
-      Prompt:
-      <br>
-      ${prompt}
-      <br><br>
-
-      Token:
-      <div class="token-box">
-        ${accessToken}
-      </div>
-    `;
-
-    resultBox.appendChild(div);
-
-  });
-
-}
-
-function clearAll(){
-
-  document.getElementById("promptInput").value = "";
-
-  document.getElementById("resultBox").innerHTML =
-    "Hasil batch akan muncul di sini...";
 }
 
 </script>
